@@ -5,9 +5,9 @@
 # Created:      5/2010
 # Copyright:    None
 #----------------------------------------------------------------------------
-# Author:       Rob King xxx
-# Changed:      03/08/2018 ...
-# Copyright:    None yyy
+# Author:       Rob King
+# Changed:      03/08/2018
+# Copyright:    None
 # Abstract:     V2.0
 #               Ported from Python 2.x to 3.7.0 with corrected deprecated code
 #               when errors/warnings were found.
@@ -189,7 +189,8 @@ class SerIface(threading.Thread):
     
     def GetYRes(self):
         
-        self.yRes = StrToInt(self.serI.readline(size=20))
+        #self.yRes = StrToInt(self.serI.readline(size=20))
+        self.yRes = StrToInt(self.serI.readline())
         if self.yRes<1 or self.yRes>1000: # That's not right...
             self.state = self.WaitForHeader
             return 0
