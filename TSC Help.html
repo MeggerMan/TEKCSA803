@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE>Default</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.2  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Joel Koltner">
+	<META NAME="CREATED" CONTENT="20100517;14204400">
+	<META NAME="CHANGEDBY" CONTENT="Joel Koltner">
+	<META NAME="CHANGED" CONTENT="20100518;12434000">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { margin: 0.5in }
+		P { margin-bottom: 0.08in }
+		TD P { margin-bottom: 0in }
+		H2 { margin-bottom: 0.08in; text-align: center }
+		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-size: 14pt; font-style: italic }
+		H2.ctl { font-size: 14pt; font-style: italic }
+		H1 { margin-bottom: 0.08in; text-align: center; page-break-before: auto }
+		H1.western { font-family: "Arial", sans-serif; font-size: 18pt }
+		H1.cjk { font-family: "Arial Unicode MS"; font-size: 16pt }
+		H1.ctl { font-family: "Tahoma"; font-size: 16pt }
+		A:link { so-language: zxx }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<H1 CLASS="western">Tektronix 1180x Screen Capture Utility</H1>
+<H2 CLASS="western" STYLE="font-style: normal">Joel Koltner, May 2010</H2>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2">The
+Tektronix 1180x Screen Capture Utility (&ldquo;TSC&rdquo;) is a
+program that allows easy screen captures from a Tek 11802
+oscilloscope using the serial port interface.  It will likely work
+with any Tek 11800 series and perhaps even 11400 series scope,
+although I don't have these to test (...and the need for such a
+utility on, e.g., the 11801 is lessened as this model can directly
+output TIFF files).</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2">Besides
+the obvious motive to be able to document waveforms without needing
+to grab a camera, I used this program as a learning exercise for the
+wxPython GUI toolkit.  I mention this in that, while the program is
+&ldquo;fast enough,&rdquo; it's definitely not &ldquo;screaming fast&rdquo;
+and this is largely a result of Python as the programming language &ndash;
+interpret languages still seem noticeably slower than good compiled
+languages!</P>
+<H2 CLASS="western" STYLE="font-style: normal; text-decoration: none">
+Setting Up Your Scope</H2>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2"><SPAN STYLE="text-decoration: none">Configuring
+your scope consists of (1) </SPAN>connecting a regular cable between
+your PC and the scope (this is a &ldquo;straight-thru&rdquo; cable &ndash;
+the scope is DCE) and (2) configuring the Utility-&gt;RS232C
+Parameters and Utility-&gt;Hardcopy screens.  The RS232C parameters
+screen should end up looking like this:</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2"><IMG SRC="RS232 Params.png" NAME="graphics1" ALIGN=LEFT WIDTH=301 HEIGHT=217 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2">The
+important bits are the <B>baud rate</B>, <B>stop bits</B>, <B>parity</B>,
+and <B>flagging </B>(aka, handshaking) &ndash; the rest doesn't
+really matter.  (In fact, PCs seem to be fast enough these days that
+everything still works if you turn flagging off completely.)</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2">Set
+the hardcopy parameters to look like this:</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2"><IMG SRC="Hardcopy Params.png" NAME="graphics2" ALIGN=LEFT WIDTH=401 HEIGHT=449 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2">The
+important bits here are <B>Printer</B>, <B>Direction</B>, <B>Data
+Format</B>, and <B>Output Port</B>.  The &ldquo;binary compacted&rdquo;
+data format was chosen because it produces the fastest possible
+screen dumps; if you inadvertently select another format TSC will
+likely just ignore the  scope or possibly spew out an occasional
+error message.  The &ldquo;horizontal&rdquo; direction was chosen
+arbitrary &ndash; supporting both is a straightforward addition to
+the program, but I didn't have need for it; if you inadvertently
+select it TSC will issue a warning when you press &ldquo;hardcopy.&rdquo;
+ Finally, &ldquo;screen format&rdquo; is largely a matter of
+preference: Any except &ldquo;Reduced&rdquo; will work -- some are a
+little more detailed than others, some are a little faster than
+others.  See the &ldquo;Trivia&rdquo; section below for details on
+why you shouldn't chose &ldquo;Reduced.&rdquo;</P>
+<H2 CLASS="western" STYLE="font-style: normal">Program Usage</H2>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+The program was written to be largely self-explanatory in its use. 
+After physically connecting your 'scope to your PC, you proceed as
+follows:</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+<BR>
+</P>
+<UL>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+	Use the drop-down box to select the serial port you're using, or
+	type in a device/port name manually.  If you use manual entry, you
+	need to cause the box to &ldquo;lose focus&rdquo; before your change
+	will be acknowledged &ndash; just hit tab or click on another
+	control.  The port name you enter will be saved between program
+	runs.  The drop-down box is pre-loaded with typical Windows and
+	Linux port names for your convenience.</P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+	The &ldquo;status&rdquo; line should change to read, &ldquo;Waiting
+	for header...&rdquo;  Once it does, press the scope's &ldquo;HARDCOPY&rdquo;
+	button and you should be the scope's screen dump slowly appear in
+	the &ldquo;Screen Capture&rdquo; window.</P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2">
+	<SPAN STYLE="font-style: normal">If you don't like the colors being
+	used, click one of the &ldquo;Pixel Color&rdquo; buttons; these will
+	be saved between program runs as well.  When you make a change, the
+	program will update the colors in the Screen Capture window, but in
+	a rather naive manner: </SPAN><I>Any</I><SPAN STYLE="font-style: normal">
+	pixel that was the &ldquo;old&rdquo; color will be changed to the
+	&ldquo;new&rdquo; color, which isn't correct if you had more than
+	one pixel value mapped to the same color.  </SPAN><SPAN STYLE="font-style: normal">In
+	practice this isn't expected to be a real limitation (in fact, I
+	doubt most people would have ever noticed this behavior in the first
+	place).</SPAN></P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2">
+	<SPAN STYLE="font-style: normal">At any point you can click the
+	&ldquo;Copy Image to Clipboard&rdquo; button so that you can paste
+	results into, e.g., Microsoft Word,  GIMP, etc.  (For some reason on
+	</SPAN><I>Linux</I><SPAN STYLE="font-style: normal"> you can't
+	directly paste into OpenOffice Writer, although if you first paste
+	into GIMP and tell GIMP to make a copy you'll then be able to paste
+	into OpenOffice).</SPAN></P>
+</UL>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+That's all there is to it!  Enjoy, and let me know if you find any
+bugs...</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+									---Joel Koltner</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+									zapwire-fun@yahoo.com</P>
+<H2 CLASS="western" STYLE="font-style: normal">Trivia Learned About
+the Tek 11802 
+</H2>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+<BR>
+</P>
+<UL>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2">
+	<SPAN STYLE="font-style: normal">Bug #1 in Tek's hardcopy output
+	routines: Selecting </SPAN>&ldquo;Reduced&rdquo; for the screen
+	format causes the scope to <I>claim</I><SPAN STYLE="font-style: normal">
+	it's sending a 552x704 pixel bitmap when </SPAN><I>in actuality</I><SPAN STYLE="font-style: normal">
+	it sends a quarter-sized, 276x352 pixel bitmap.  This confuses TSC
+	and you'll get sort of an interlaced/doubled display and &ndash;
+	eventually &ndash; an error message when the scope doesn't finish
+	spitting out as many pixels as it claimed it would.  I didn't figure
+	I'd ever want a &ldquo;reduced&rdquo; output, so I didn't bother
+	trying to work around this.</SPAN></P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+	Bug? #2: When using the &ldquo;BinHex Compacted&rdquo; data format,
+	what apparently should be CR/LF line separators (0x0A, 0x0D) are
+	instead received as follows:</P>
+</UL>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+<BR>
+</P>
+<DL>
+	<DL>
+		<DL>
+			<DL>
+				<DL>
+					<DL>
+						<DD>
+						<TABLE WIDTH=312 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+							<COL WIDTH=151>
+							<COL WIDTH=143>
+							<TR VALIGN=TOP>
+								<TD WIDTH=151>
+									<P ALIGN=JUSTIFY>&ldquo;<B>EOL String&rdquo; Setting</B></P>
+								</TD>
+								<TD WIDTH=143>
+									<P ALIGN=JUSTIFY><B>Output Character(s)</B></P>
+								</TD>
+							</TR>
+							<TR VALIGN=TOP>
+								<TD WIDTH=151>
+									<P ALIGN=JUSTIFY>CR/LF</P>
+								</TD>
+								<TD WIDTH=143>
+									<P ALIGN=JUSTIFY>0x83, 0xC4</P>
+								</TD>
+							</TR>
+							<TR VALIGN=TOP>
+								<TD WIDTH=151>
+									<P ALIGN=JUSTIFY>CR</P>
+								</TD>
+								<TD WIDTH=143>
+									<P ALIGN=JUSTIFY>0x49</P>
+								</TD>
+							</TR>
+							<TR VALIGN=TOP>
+								<TD WIDTH=151>
+									<P ALIGN=JUSTIFY>LF</P>
+								</TD>
+								<TD WIDTH=143>
+									<P ALIGN=JUSTIFY>0x69</P>
+								</TD>
+							</TR>
+							<TR VALIGN=TOP>
+								<TD WIDTH=151>
+									<P ALIGN=JUSTIFY>LF/CR</P>
+								</TD>
+								<TD WIDTH=143>
+									<P ALIGN=JUSTIFY>0x9B, 0x2E</P>
+								</TD>
+							</TR>
+						</TABLE>
+					</DL>
+				</DL>
+			</DL>
+		</DL>
+	</DL>
+</DL>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+	</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.49in; margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+I expect this an artifact of the compression routines getting invoked
+when they shouldn't be.</P>
+<UL>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; widows: 2; orphans: 2">
+	<SPAN STYLE="font-style: normal">If you select  one of the
+	uncompacted output data formats (&ldquo;BinHex&rdquo; or &ldquo;Binary&rdquo;),
+	the scope's serial port spits out ~1800 bytes/second when the port
+	is set to 19,200bps &ndash; entirely respectable.  Annoyingly,
+	there's a </SPAN><I>major </I><SPAN STYLE="font-style: normal">throughput
+	hit in when switching to &ldquo;BinHex Compacted&rdquo; -- you
+	obtain only ~700 bytes/second!  This performance reduction appears
+	to be almost entirely due to how quickly the scope can compact the
+	data, as switching to &ldquo;Binary Compacted&rdquo; only outputs
+	~380 bytes/second!  (The actual data rates are somewhat dependent on
+	just what's being displayed on the screen.)  The long-and-short of
+	this is that setting the scope's bit rate to 19,200 doesn't buy you
+	anything (perhaps this explains why Tek's default is 9600bps), and
+	complex screen dumps will always take about a minute.</SPAN></P>
+</UL>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+I'd love to find some of the designers of this classic scope to
+discuss just how this classic instrument came about.  These days the
+11802 is more than two decades old, but it still holds great value
+for those interested in performing very high-speed time domain
+measurements on a budget.</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-style: normal; widows: 2; orphans: 2">
+<BR>
+</P>
+</BODY>
+</HTML>
