@@ -6,7 +6,7 @@
 # Copyright:    None
 #----------------------------------------------------------------------------
 # Author:       Rob King
-# Changed:      03/08/2018
+# Changed:      03/08/2018 ...
 # Copyright:    None
 # Abstract:     V2.0
 #               Ported from Python 2.x to 3.7.0 with corrected deprecated code
