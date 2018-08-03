@@ -5,7 +5,7 @@
 # Created:      5/2010
 # Copyright:    None
 #----------------------------------------------------------------------------
-# Author:       Rob King
+# Author:       Rob King xxx
 # Changed:      03/08/2018 ...
 # Copyright:    None
 # Abstract:     V2.0
